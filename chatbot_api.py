@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-DEEPSEEK_API_KEY = "sk-b5efeb796de44211a4ae1d8603ab2cdd"
+DEEPSEEK_API_KEY = "sk-b5efeb796de44211a4ae1d8603ab2cdd"  # ✅ Replace with your DeepSeek API key
 
 @app.route('/chat', methods=['POST'])
 def chat():
