@@ -1,15 +1,16 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
-DEEPSEEK_API_KEY = "sk-b5efeb796de44211a4ae1d8603ab2cdd"  
+DEEPSEEK_API_KEY = "sk-b5efeb796de44211a4ae1d8603ab2cdd"
 
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.json.get('message')
 
-    # Call DeepSeek API
     response = requests.post(
         "https://api.deepseek.com/v1/chat/completions",
         headers={
@@ -17,7 +18,7 @@ def chat():
             "Content-Type": "application/json"
         },
         json={
-            "model": "deepseek-chat",  # Or use "deepseek-coder" if you want code-based replies
+            "model": "deepseek-chat",
             "messages": [
                 {"role": "system", "content": "You are a helpful stock market assistant."},
                 {"role": "user", "content": user_message}
@@ -31,6 +32,10 @@ def chat():
         return jsonify({"reply": reply})
     else:
         return jsonify({"reply": f"❌ DeepSeek error: {response.status_code}"}), 500
+
+@app.route('/')
+def home():
+    return "✅ Flask + DeepSeek is Live!"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
